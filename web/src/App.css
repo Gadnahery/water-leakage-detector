@@ -14,9 +14,28 @@
   flex-wrap: wrap;
 }
 
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #38bdf8);
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: var(--shadow);
+}
+
 .dashboard-header h1 {
-  font-size: 26px;
-  margin-bottom: 4px;
+  font-size: 24px;
+  margin-bottom: 2px;
 }
 
 .subtitle {
@@ -35,9 +54,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text);
@@ -56,6 +75,24 @@
 
 .error-text {
   color: var(--danger);
+}
+
+/* Shared round icon badge */
+.icon-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--accent-bg);
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.icon-badge-inline {
+  width: 38px;
+  height: 38px;
 }
 
 /* Connection badge */
@@ -122,42 +159,57 @@
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 20px;
   box-shadow: var(--shadow);
+  transition: transform 0.15s, box-shadow 0.15s;
 }
 
 /* Status banner */
 .status-banner {
   display: flex;
   align-items: center;
-  gap: 14px;
-  border-radius: 14px;
-  padding: 18px 20px;
+  gap: 16px;
+  border-radius: 20px;
+  padding: 18px 22px;
   margin-bottom: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.status-banner.neutral .icon-badge {
+  background: var(--surface-2);
+  color: var(--text-muted);
 }
 
 .status-banner.normal {
+  border-color: var(--success);
+}
+
+.status-banner.normal .icon-badge {
   background: var(--success-bg);
   color: var(--success);
-  border: 1px solid var(--success);
 }
 
 .status-banner.abnormal {
-  background: var(--danger-bg);
-  color: var(--danger);
-  border: 1px solid var(--danger);
+  border-color: var(--danger);
   animation: alert-pulse 1.6s infinite;
 }
 
+.status-banner.abnormal .icon-badge {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
 @keyframes alert-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 var(--danger-bg); }
-  50% { box-shadow: 0 0 0 8px transparent; }
+  0%, 100% { box-shadow: var(--shadow); }
+  50% { box-shadow: 0 0 0 8px var(--danger-bg); }
 }
 
 .status-title {
   font-size: 17px;
   font-weight: 700;
-  color: inherit;
+  color: var(--text-h);
 }
 
 .status-subtitle {
@@ -177,24 +229,21 @@
 .sensor-card {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 20px;
+  gap: 16px;
+  padding: 22px;
+}
+
+.sensor-card:hover {
+  transform: translateY(-2px);
 }
 
 .sensor-card.flagged {
   border-color: var(--danger);
 }
 
-.sensor-card-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  background: var(--accent-bg);
-  color: var(--accent);
-  flex-shrink: 0;
+.sensor-card.flagged .icon-badge {
+  background: var(--danger-bg);
+  color: var(--danger);
 }
 
 .sensor-card-label {
@@ -225,12 +274,22 @@
 
 /* History */
 .history-card {
-  padding: 20px;
+  padding: 22px;
 }
 
-.history-card h3 {
+.history-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.history-card-header h3 {
   font-size: 15px;
-  margin-bottom: 14px;
+}
+
+.history-empty {
+  padding: 8px 0 4px;
 }
 
 .table-scroll {

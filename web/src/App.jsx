@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Waves } from 'lucide-react'
 import { supabase } from './supabaseClient'
 import { useTheme } from './hooks/useTheme'
 import { useLeakAlert } from './hooks/useLeakAlert'
@@ -71,9 +72,14 @@ function App() {
   return (
     <div className="dashboard">
       <header className="dashboard-header">
-        <div>
-          <h1>Water Leakage Detector</h1>
-          <p className="subtitle">Live readings from {latest?.device_id ?? 'device'}</p>
+        <div className="header-title">
+          <div className="header-logo">
+            <Waves size={22} />
+          </div>
+          <div>
+            <h1>Water Leakage Detector</h1>
+            <p className="subtitle">Live readings from {latest?.device_id ?? 'device'}</p>
+          </div>
         </div>
         <div className="header-actions">
           <ConnectionBadge lastSeenIso={latest?.created_at} />
@@ -81,29 +87,22 @@ function App() {
         </div>
       </header>
 
-      {loading && <p className="info-text">Loading readings…</p>}
       {connError && <p className="error-text">Failed to load data: {connError}</p>}
 
-      {!loading && !connError && !latest && (
-        <p className="info-text">No readings yet. Waiting for the device to report in.</p>
-      )}
+      <StatusBanner isAbnormal={isAbnormal} hasData={!!latest} loading={loading} />
 
-      {latest && (
-        <>
-          <StatusBanner isAbnormal={isAbnormal} />
+      <div className="sensor-grid">
+        <SensorCard label="Sensor 1" value={latest?.sensor1_flow} flagged={isAbnormal} />
+        <SensorCard label="Sensor 2" value={latest?.sensor2_flow} flagged={isAbnormal} />
+      </div>
 
-          <div className="sensor-grid">
-            <SensorCard label="Sensor 1" value={latest.sensor1_flow} flagged={isAbnormal} />
-            <SensorCard label="Sensor 2" value={latest.sensor2_flow} flagged={isAbnormal} />
-          </div>
+      <p className="last-updated">
+        {latest
+          ? `Last updated: ${new Date(latest.created_at).toLocaleString()}`
+          : 'Waiting for the device to report in…'}
+      </p>
 
-          <p className="last-updated">
-            Last updated: {new Date(latest.created_at).toLocaleString()}
-          </p>
-
-          <HistoryTable rows={history} />
-        </>
-      )}
+      <HistoryTable rows={history} />
     </div>
   )
 }
